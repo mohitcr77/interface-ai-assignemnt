@@ -1,0 +1,38 @@
+{
+  "transfers": [
+    {
+      "t": 1792419812.786,
+      "from": "automation",
+      "to": "human",
+      "reason": "session_expired: Login form shown after we were authenticated: the server session is gone. Needs a human (or a re-login capability)."
+    },
+    {
+      "t": 1792419813.395,
+      "from": "human",
+      "to": "automation",
+      "reason": "operator returned control"
+    }
+  ],
+  "resolution": "retry_step",
+  "note": "human re-authenticated the live session",
+  "human_actions": [
+    {
+      "k": "input",
+      "target": "input[name=username] \"john\"",
+      "value": "john"
+    },
+    {
+      "k": "input",
+      "target": "input[name=password] \"[REDACTED]\"",
+      "value": "[REDACTED]"
+    },
+    {
+      "k": "click",
+      "target": "input \"Log In\""
+    },
+    {
+      "k": "navigate",
+      "url": "http://localhost:8080/parabank/overview.htm"
+    }
+  ]
+}

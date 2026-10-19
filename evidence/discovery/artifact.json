@@ -1,0 +1,431 @@
+{
+  "schema_version": "1.0",
+  "name": "get_account_details",
+  "version": 1,
+  "description": "Log in to the bank back office and read the account type and current balance for one account number.",
+  "goal": "Log in with the given credentials, open the details page of the account whose number is {{account_id}}, and read its account type and current balance.",
+  "app": {
+    "profile": "parabank",
+    "entry_url": "http://localhost:8080/parabank/index.htm",
+    "allowed_hosts": [
+      "localhost:8080"
+    ]
+  },
+  "status": "draft",
+  "confidence": {
+    "runs": 0,
+    "successes": 0,
+    "score": 0.0,
+    "last_evaluated": null
+  },
+  "inputs": [
+    {
+      "name": "username",
+      "type": "string",
+      "description": "online banking username",
+      "required": true,
+      "secret": false,
+      "pattern": null,
+      "example": "john"
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "description": "online banking password",
+      "required": true,
+      "secret": true,
+      "pattern": null,
+      "example": null
+    },
+    {
+      "name": "account_id",
+      "type": "integer",
+      "description": "account number to look up",
+      "required": true,
+      "secret": false,
+      "pattern": "\\d{3,12}",
+      "example": "****2345"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "account_type",
+      "type": "string",
+      "description": "account type, e.g. CHECKING or SAVINGS"
+    },
+    {
+      "name": "balance",
+      "type": "number",
+      "description": "current balance in dollars"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "invalid_credentials",
+      "kind": "business_outcome",
+      "description": "Login rejected by the bank. A legitimate answer for the caller, not a crash.",
+      "detect": {
+        "text_visible": "could not be verified",
+        "selector_visible": null,
+        "url_regex": null
+      },
+      "active_after_url": null,
+      "recovery": null,
+      "dismiss_selector": null,
+      "max_retries": 2,
+      "escalate": false
+    },
+    {
+      "id": "unexpected_dialog",
+      "kind": "recoverable",
+      "description": "A modal notice overlays the page. Dismiss it, then retry the step.",
+      "detect": {
+        "text_visible": null,
+        "selector_visible": "[role=dialog]",
+        "url_regex": null
+      },
+      "active_after_url": null,
+      "recovery": "dismiss",
+      "dismiss_selector": "[role=dialog] button",
+      "max_retries": 2,
+      "escalate": false
+    },
+    {
+      "id": "session_expired",
+      "kind": "hard_failure",
+      "description": "Login form shown after we were authenticated: the server session is gone. Needs a human (or a re-login capability).",
+      "detect": {
+        "text_visible": null,
+        "selector_visible": "form[name=login]",
+        "url_regex": null
+      },
+      "active_after_url": "overview\\.htm",
+      "recovery": null,
+      "dismiss_selector": null,
+      "max_retries": 2,
+      "escalate": true
+    },
+    {
+      "id": "app_internal_error",
+      "kind": "hard_failure",
+      "description": "The application reported an internal error.",
+      "detect": {
+        "text_visible": "internal error has occurred",
+        "selector_visible": null,
+        "url_regex": null
+      },
+      "active_after_url": null,
+      "recovery": null,
+      "dismiss_selector": null,
+      "max_retries": 2,
+      "escalate": true
+    },
+    {
+      "id": "account_id_not_found",
+      "kind": "business_outcome",
+      "description": "No record matched input 'account_id' (legitimate answer, not a failure).",
+      "detect": {
+        "text_visible": null,
+        "selector_visible": null,
+        "url_regex": null
+      },
+      "active_after_url": null,
+      "recovery": null,
+      "dismiss_selector": null,
+      "max_retries": 2,
+      "escalate": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "s1",
+      "intent": "Open the application entry page",
+      "action": "navigate",
+      "risk": "reversible",
+      "target": null,
+      "value": {
+        "template": "http://localhost:8080/parabank/index.htm"
+      },
+      "submit": false,
+      "extract_as": null,
+      "transform": null,
+      "expect": {
+        "url_pattern": "/parabank/index.htm",
+        "text_visible": "Customer Login",
+        "selector_visible": null,
+        "description": "landed on /parabank/index.htm"
+      },
+      "if_missing": null,
+      "source": "agent"
+    },
+    {
+      "id": "s2",
+      "intent": "Type into textbox 'Username'",
+      "action": "type",
+      "risk": "reversible",
+      "target": {
+        "description": "textbox 'Username'",
+        "candidates": [
+          {
+            "strategy": "css",
+            "args": {
+              "selector": "input[name=\"username\"]"
+            },
+            "rank": 3,
+            "note": "name attribute (form field contract; stable on legacy forms)"
+          },
+          {
+            "strategy": "css",
+            "args": {
+              "selector": "html > body:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > form:nth-of-type(1) > div:nth-of-type(1) > input:nth-of-type(1)"
+            },
+            "rank": 9,
+            "note": "structural path: brittle, last resort"
+          }
+        ]
+      },
+      "value": {
+        "template": "{{username}}"
+      },
+      "submit": false,
+      "extract_as": null,
+      "transform": null,
+      "expect": null,
+      "if_missing": null,
+      "source": "agent"
+    },
+    {
+      "id": "s3",
+      "intent": "Type into input 'Password'",
+      "action": "type",
+      "risk": "reversible",
+      "target": {
+        "description": "input 'Password'",
+        "candidates": [
+          {
+            "strategy": "css",
+            "args": {
+              "selector": "input[name=\"password\"]"
+            },
+            "rank": 3,
+            "note": "name attribute (form field contract; stable on legacy forms)"
+          },
+          {
+            "strategy": "css",
+            "args": {
+              "selector": "html > body:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > form:nth-of-type(1) > div:nth-of-type(2) > input:nth-of-type(1)"
+            },
+            "rank": 9,
+            "note": "structural path: brittle, last resort"
+          }
+        ]
+      },
+      "value": {
+        "template": "{{password}}"
+      },
+      "submit": false,
+      "extract_as": null,
+      "transform": null,
+      "expect": null,
+      "if_missing": null,
+      "source": "agent"
+    },
+    {
+      "id": "s4",
+      "intent": "Click button 'Log In'",
+      "action": "click",
+      "risk": "reversible",
+      "target": {
+        "description": "button 'Log In'",
+        "candidates": [
+          {
+            "strategy": "role",
+            "args": {
+              "role": "button",
+              "name": "Log In",
+              "exact": true
+            },
+            "rank": 0,
+            "note": "ARIA role + accessible name: semantic, survives markup changes"
+          },
+          {
+            "strategy": "css",
+            "args": {
+              "selector": "input[type=\"submit\"][value=\"Log In\"]"
+            },
+            "rank": 3,
+            "note": "submit control by value"
+          },
+          {
+            "strategy": "css",
+            "args": {
+              "selector": "html > body:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > form:nth-of-type(1) > div:nth-of-type(3) > input:nth-of-type(1)"
+            },
+            "rank": 9,
+            "note": "structural path: brittle, last resort"
+          }
+        ]
+      },
+      "value": null,
+      "submit": false,
+      "extract_as": null,
+      "transform": null,
+      "expect": {
+        "url_pattern": "/parabank/overview.htm",
+        "text_visible": "Accounts Overview",
+        "selector_visible": null,
+        "description": "landed on /parabank/overview.htm"
+      },
+      "if_missing": null,
+      "source": "agent"
+    },
+    {
+      "id": "s5",
+      "intent": "Click link '{{account_id}}'",
+      "action": "click",
+      "risk": "reversible",
+      "target": {
+        "description": "link '****3344'",
+        "candidates": [
+          {
+            "strategy": "role",
+            "args": {
+              "role": "link",
+              "name": "{{account_id}}",
+              "exact": true
+            },
+            "rank": 0,
+            "note": "ARIA role + accessible name: semantic, survives markup changes"
+          },
+          {
+            "strategy": "text",
+            "args": {
+              "text": "{{account_id}}",
+              "exact": true
+            },
+            "rank": 2,
+            "note": "visible text"
+          },
+          {
+            "strategy": "css",
+            "args": {
+              "selector": "a[href=\"activity.htm?id={{account_id}}\"]"
+            },
+            "rank": 4,
+            "note": "href (breaks if routes change)"
+          }
+        ]
+      },
+      "value": null,
+      "submit": false,
+      "extract_as": null,
+      "transform": null,
+      "expect": {
+        "url_pattern": "/parabank/activity.htm?id=:id",
+        "text_visible": "Account Details",
+        "selector_visible": null,
+        "description": "landed on /parabank/activity.htm?id=:id"
+      },
+      "if_missing": "account_id_not_found",
+      "source": "agent"
+    },
+    {
+      "id": "s6",
+      "intent": "Read account_type from cell in row 'Account Type:' (col 1)",
+      "action": "extract",
+      "risk": "read",
+      "target": {
+        "description": "cell in row 'Account Type:' (col 1)",
+        "candidates": [
+          {
+            "strategy": "row_cell",
+            "args": {
+              "row_text": "Account Type:",
+              "column": 1
+            },
+            "rank": 1,
+            "note": "cell relative to its row label: stable for tables without ids"
+          },
+          {
+            "strategy": "css",
+            "args": {
+              "selector": "#accountType"
+            },
+            "rank": 3,
+            "note": "element id"
+          },
+          {
+            "strategy": "css",
+            "args": {
+              "selector": "html > body:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(2) > td:nth-of-type(2)"
+            },
+            "rank": 9,
+            "note": "structural path: brittle, last resort"
+          }
+        ]
+      },
+      "value": null,
+      "submit": false,
+      "extract_as": "account_type",
+      "transform": "text",
+      "expect": null,
+      "if_missing": null,
+      "source": "agent"
+    },
+    {
+      "id": "s7",
+      "intent": "Read balance from cell in row 'Balance:' (col 1)",
+      "action": "extract",
+      "risk": "read",
+      "target": {
+        "description": "cell in row 'Balance:' (col 1)",
+        "candidates": [
+          {
+            "strategy": "row_cell",
+            "args": {
+              "row_text": "Balance:",
+              "column": 1
+            },
+            "rank": 1,
+            "note": "cell relative to its row label: stable for tables without ids"
+          },
+          {
+            "strategy": "css",
+            "args": {
+              "selector": "#balance"
+            },
+            "rank": 3,
+            "note": "element id"
+          },
+          {
+            "strategy": "css",
+            "args": {
+              "selector": "html > body:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(3) > td:nth-of-type(2)"
+            },
+            "rank": 9,
+            "note": "structural path: brittle, last resort"
+          }
+        ]
+      },
+      "value": null,
+      "submit": false,
+      "extract_as": "balance",
+      "transform": "currency",
+      "expect": null,
+      "if_missing": null,
+      "source": "agent"
+    }
+  ],
+  "success": {
+    "url_pattern": "/parabank/activity.htm?id=:id",
+    "text_visible": "Account Details",
+    "selector_visible": null,
+    "description": "final page reached"
+  },
+  "provenance": {
+    "recorded_at": "2026-10-19T14:10:45.848607+00:00",
+    "model": "claude-haiku-4-5",
+    "discovery_run_id": "discovery-****1019T****1032-2a62cb",
+    "agent_steps": 6
+  }
+}

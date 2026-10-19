@@ -1,0 +1,11 @@
+{"t": 1792419814.47, "run_id": "replay-20261019T102334-83a658", "kind": "replay_start", "capability": "get_account_details", "version": 1, "status": "draft", "inputs": ["username", "password", "account_id"]}
+{"t": 1792419814.47, "run_id": "replay-20261019T102334-83a658", "kind": "step_start", "step": "s1", "intent": "Open the application entry page", "action": "navigate", "risk": "reversible", "value_template": "http://localhost:8080/parabank/index.htm"}
+{"t": 1792419815.052, "run_id": "replay-20261019T102334-83a658", "kind": "step_ok", "step": "s1", "status": "ok", "locator": null, "url": "http://localhost:8080/parabank/index.htm"}
+{"t": 1792419815.052, "run_id": "replay-20261019T102334-83a658", "kind": "step_start", "step": "s2", "intent": "Type into textbox 'Username'", "action": "type", "risk": "reversible", "value_template": "{{username}}"}
+{"t": 1792419815.066, "run_id": "replay-20261019T102334-83a658", "kind": "step_ok", "step": "s2", "status": "ok", "locator": "css:{'selector': 'input[name=\"username\"]'}", "url": "http://localhost:8080/parabank/index.htm"}
+{"t": 1792419815.066, "run_id": "replay-20261019T102334-83a658", "kind": "step_start", "step": "s3", "intent": "Type into input 'Password'", "action": "type", "risk": "reversible", "value_template": "{{password}}"}
+{"t": 1792419815.097, "run_id": "replay-20261019T102334-83a658", "kind": "step_ok", "step": "s3", "status": "ok", "locator": "css:{'selector': 'input[name=\"password\"]'}", "url": "http://localhost:8080/parabank/index.htm"}
+{"t": 1792419815.097, "run_id": "replay-20261019T102334-83a658", "kind": "step_start", "step": "s4", "intent": "Click button 'Log In'", "action": "click", "risk": "reversible", "value_template": null}
+{"t": 1792419815.702, "run_id": "replay-20261019T102334-83a658", "kind": "condition_detected", "step": "s4", "condition": "invalid_credentials", "condition_kind": "business_outcome"}
+{"t": 1792419815.702, "run_id": "replay-20261019T102334-83a658", "kind": "business_outcome", "step": "s4", "code": "invalid_credentials"}
+{"t": 1792419815.742, "run_id": "replay-20261019T102334-83a658", "kind": "replay_end", "status": "business_outcome", "outcome": "invalid_credentials", "failure": null, "outputs": {}, "duration_ms": 1232}

@@ -1,0 +1,15 @@
+{
+  "name": "get_account_details",
+  "profile": "parabank",
+  "description": "Log in to the bank back office and read the account type and current balance for one account number.",
+  "goal": "Log in with the given credentials, open the details page of the account whose number is {{account_id}}, and read its account type and current balance.",
+  "inputs": [
+    {"name": "username", "type": "string", "description": "online banking username", "required": true, "example": "john"},
+    {"name": "password", "type": "string", "description": "online banking password", "required": true, "secret": true},
+    {"name": "account_id", "type": "integer", "description": "account number to look up", "required": true, "pattern": "\\d{3,12}", "example": "12345"}
+  ],
+  "outputs": [
+    {"name": "account_type", "type": "string", "description": "account type, e.g. CHECKING or SAVINGS"},
+    {"name": "balance", "type": "number", "description": "current balance in dollars"}
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "capability": "get_account_details",
+  "version": 1,
+  "status": "failure",
+  "outputs": {},
+  "outcome": null,
+  "failure": {
+    "step_id": null,
+    "category": "invalid_input",
+    "message": "input 'account_id' must be an integer",
+    "expected": "",
+    "observed": "",
+    "url": "about:blank",
+    "screenshot": null
+  },
+  "recoveries": [],
+  "escalations": [],
+  "steps": [],
+  "run_id": "replay-****1019T****2325-e1c9ce",
+  "duration_ms": 0
+}

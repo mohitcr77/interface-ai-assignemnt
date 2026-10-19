@@ -1,0 +1,44 @@
+{
+  "capability": "get_account_details",
+  "version": 1,
+  "status": "business_outcome",
+  "outputs": {},
+  "outcome": {
+    "code": "invalid_credentials",
+    "message": "Login rejected by the bank. A legitimate answer for the caller, not a crash."
+  },
+  "failure": null,
+  "recoveries": [],
+  "escalations": [],
+  "steps": [
+    {
+      "step_id": "s1",
+      "intent": "Open the application entry page",
+      "status": "ok",
+      "locator_used": null,
+      "attempts": 1,
+      "detail": "",
+      "duration_ms": 582
+    },
+    {
+      "step_id": "s2",
+      "intent": "Type into textbox 'Username'",
+      "status": "ok",
+      "locator_used": "css:{'selector': 'input[name=\"username\"]'}",
+      "attempts": 1,
+      "detail": "",
+      "duration_ms": 14
+    },
+    {
+      "step_id": "s3",
+      "intent": "Type into input 'Password'",
+      "status": "ok",
+      "locator_used": "css:{'selector': 'input[name=\"password\"]'}",
+      "attempts": 1,
+      "detail": "",
+      "duration_ms": 30
+    }
+  ],
+  "run_id": "replay-****1019T****2334-83a658",
+  "duration_ms": 1232
+}

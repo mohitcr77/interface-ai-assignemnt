@@ -1,0 +1,19 @@
+{
+  "capability": "get_account_details",
+  "run_id": "replay-****1019T****2330-f****5928",
+  "step_id": "s5",
+  "step_intent": "Click link '{{account_id}}'",
+  "reason": "Login form shown after we were authenticated: the server session is gone. Needs a human (or a re-login capability).",
+  "category": "session_expired",
+  "url": "http://localhost:8080/parabank/activity.htm?id=****3344",
+  "screenshot": "evidence/replay-session-handoff/screens/001-fail-s5.png",
+  "page_text_excerpt": "Experience the difference\n\nSolutions\nAbout Us\nServices\nProducts\nLocations\nAdmin Page\nhome\nabout\ncontact\nCustomer Login\n\nUsername\n\nPassword\n\nForgot login info?\n\nRegister\n\nError!\n\nServer returned 401: {\"message\":\"User login required\",\"status\":401}\n\nHome|\nAbout Us|\nServices|\nProducts|\nLocations|\nSite Map|\nContact Us\n\n© Parasoft. All rights reserved.\n\nVisit us at:\nwww.parasoft.com",
+  "options": [
+    "retry_step",
+    "skip_step",
+    "finish",
+    "abort"
+  ],
+  "id": "ir-22d99f8e",
+  "created_at": 1792419812.786
+}

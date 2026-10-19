@@ -1,0 +1,53 @@
+{
+  "capability": "get_account_details",
+  "version": 1,
+  "status": "business_outcome",
+  "outputs": {},
+  "outcome": {
+    "code": "account_id_not_found",
+    "message": "No record matched input 'account_id' (legitimate answer, not a failure)."
+  },
+  "failure": null,
+  "recoveries": [],
+  "escalations": [],
+  "steps": [
+    {
+      "step_id": "s1",
+      "intent": "Open the application entry page",
+      "status": "ok",
+      "locator_used": null,
+      "attempts": 1,
+      "detail": "",
+      "duration_ms": 595
+    },
+    {
+      "step_id": "s2",
+      "intent": "Type into textbox 'Username'",
+      "status": "ok",
+      "locator_used": "css:{'selector': 'input[name=\"username\"]'}",
+      "attempts": 1,
+      "detail": "",
+      "duration_ms": 14
+    },
+    {
+      "step_id": "s3",
+      "intent": "Type into input 'Password'",
+      "status": "ok",
+      "locator_used": "css:{'selector': 'input[name=\"password\"]'}",
+      "attempts": 1,
+      "detail": "",
+      "duration_ms": 50
+    },
+    {
+      "step_id": "s4",
+      "intent": "Click button 'Log In'",
+      "status": "ok",
+      "locator_used": "role:{'role': 'button', 'name': 'Log In', 'exact': True}",
+      "attempts": 1,
+      "detail": "",
+      "duration_ms": 626
+    }
+  ],
+  "run_id": "replay-****1019T****2315-690cf7",
+  "duration_ms": 9422
+}

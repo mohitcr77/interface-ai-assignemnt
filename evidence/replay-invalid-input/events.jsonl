@@ -1,0 +1,2 @@
+{"t": 1792419805.848, "run_id": "replay-20261019T102325-e1c9ce", "kind": "replay_start", "capability": "get_account_details", "version": 1, "status": "draft", "inputs": ["username", "password", "account_id"]}
+{"t": 1792419805.868, "run_id": "replay-20261019T102325-e1c9ce", "kind": "replay_end", "status": "failure", "outcome": null, "failure": {"step_id": null, "category": "invalid_input", "message": "input 'account_id' must be an integer", "expected": "", "observed": "", "url": "about:blank", "screenshot": null}, "outputs": {}, "duration_ms": 0}

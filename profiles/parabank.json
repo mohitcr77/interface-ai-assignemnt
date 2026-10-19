@@ -1,0 +1,44 @@
+{
+  "name": "parabank",
+  "description": "Parasoft ParaBank demo bank (legacy-style server-rendered web app, no test IDs). Local Docker instance.",
+  "entry_url": "http://localhost:8080/parabank/index.htm",
+  "allowed_hosts": ["localhost:8080"],
+  "allowed_actions": ["navigate", "click", "type", "select", "press", "extract"],
+  "safe_submit_patterns": ["^log ?in$", "^find transactions$", "^find my login info$"],
+  "irreversible_patterns": [
+    "transfer", "open new account", "request loan", "update profile", "register",
+    "send payment", "bill pay", "delete", "close", "submit", "confirm"
+  ],
+  "conditions": [
+    {
+      "id": "invalid_credentials",
+      "kind": "business_outcome",
+      "description": "Login rejected by the bank. A legitimate answer for the caller, not a crash.",
+      "detect": {"text_visible": "could not be verified"}
+    },
+    {
+      "id": "unexpected_dialog",
+      "kind": "recoverable",
+      "description": "A modal notice overlays the page. Dismiss it, then retry the step.",
+      "detect": {"selector_visible": "[role=dialog]"},
+      "recovery": "dismiss",
+      "dismiss_selector": "[role=dialog] button",
+      "max_retries": 2
+    },
+    {
+      "id": "session_expired",
+      "kind": "hard_failure",
+      "description": "Login form shown after we were authenticated: the server session is gone. Needs a human (or a re-login capability).",
+      "detect": {"selector_visible": "form[name=login]"},
+      "active_after_url": "overview\\.htm",
+      "escalate": true
+    },
+    {
+      "id": "app_internal_error",
+      "kind": "hard_failure",
+      "description": "The application reported an internal error.",
+      "detect": {"text_visible": "internal error has occurred"},
+      "escalate": true
+    }
+  ]
+}

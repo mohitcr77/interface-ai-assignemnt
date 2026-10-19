@@ -1,0 +1,67 @@
+{
+  "capability": "get_account_details",
+  "version": 1,
+  "status": "failure",
+  "outputs": {},
+  "outcome": null,
+  "failure": {
+    "step_id": "s5",
+    "category": "session_expired",
+    "message": "Login form shown after we were authenticated: the server session is gone. Needs a human (or a re-login capability).",
+    "expected": "normal application state",
+    "observed": "condition 'session_expired' detected",
+    "url": "http://localhost:8080/parabank/activity.htm?id=****3344",
+    "screenshot": "screens/001-fail-s5.png"
+  },
+  "recoveries": [],
+  "escalations": [],
+  "steps": [
+    {
+      "step_id": "s1",
+      "intent": "Open the application entry page",
+      "status": "ok",
+      "locator_used": null,
+      "attempts": 1,
+      "detail": "",
+      "duration_ms": 591
+    },
+    {
+      "step_id": "s2",
+      "intent": "Type into textbox 'Username'",
+      "status": "ok",
+      "locator_used": "css:{'selector': 'input[name=\"username\"]'}",
+      "attempts": 1,
+      "detail": "",
+      "duration_ms": 13
+    },
+    {
+      "step_id": "s3",
+      "intent": "Type into input 'Password'",
+      "status": "ok",
+      "locator_used": "css:{'selector': 'input[name=\"password\"]'}",
+      "attempts": 1,
+      "detail": "",
+      "duration_ms": 28
+    },
+    {
+      "step_id": "s4",
+      "intent": "Click button 'Log In'",
+      "status": "ok",
+      "locator_used": "role:{'role': 'button', 'name': 'Log In', 'exact': True}",
+      "attempts": 1,
+      "detail": "",
+      "duration_ms": 627
+    },
+    {
+      "step_id": "s5",
+      "intent": "Click link '{{account_id}}'",
+      "status": "failed",
+      "locator_used": null,
+      "attempts": 1,
+      "detail": "Login form shown after we were authenticated: the server session is gone. Needs a human (or a re-login capability).",
+      "duration_ms": 643
+    }
+  ],
+  "run_id": "replay-****1019T****2328-4bbd4b",
+  "duration_ms": 1904
+}
